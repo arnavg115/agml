@@ -22,7 +22,8 @@ class NN:
         self.yhat = i
         loss = self.loss.run(y=self.y, yhat = i)
         return i, loss
-    
+
+    # todo: finish backprop for entire nn
     def backward(self):
         grad = []
         ignore = True
