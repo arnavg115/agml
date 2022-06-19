@@ -1,5 +1,3 @@
-import numpy as np
-
 from snn.layers import softmax
 from snn.utils.losses import cross_ent
 
