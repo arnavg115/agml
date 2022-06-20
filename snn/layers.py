@@ -13,12 +13,16 @@ class Dense:
     def forward(self,inpt):
         self.inpt = inpt
         self.intermed = np.dot(self.w, inpt) + self.b
+        print(self.intermed.shape)
         return self.act.run(self.intermed)
 
+    # todo: fix backprop error
     def backward(self, otpt_grad):
+        print(otpt_grad.shape)
         act_d = self.act.der(self.intermed) * otpt_grad
         w_grad = np.dot(act_d,self.inpt.T)
         b_grad = act_d
+        return act_d
 
 
 

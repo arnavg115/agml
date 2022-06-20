@@ -10,7 +10,7 @@ class relu:
         return np.maximum(0,x)
     @staticmethod
     def der(x):
-        return 0 if relu(x) == 0 else 1
+        return (relu.run(x)).astype(int)
 
 
 

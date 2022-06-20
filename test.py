@@ -7,7 +7,11 @@ from snn.utils.losses import cross_ent
 
 k = NN([Dense(10,3,relu),Dense(3,2,relu),softmax()],loss=cross_ent)
 
-ot = k.forward(np.ones((10,1000)),np.ones((2,1000)))
+print(k.train(np.ones((10,1000)),np.ones((2,1000))))
+
+# print(type(k.loss))
+
+# ot = k.forward(np.ones((10,1000)),np.ones((2,1000)))
 k.backward()
 
 
