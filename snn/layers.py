@@ -1,5 +1,4 @@
 import numpy as np
-
 from snn.utils.activations import relu
 
 
