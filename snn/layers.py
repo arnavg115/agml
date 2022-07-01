@@ -1,5 +1,5 @@
 import numpy as np
-from snn.utils.activations import relu
+from .utils.activations import relu
 
 
 class Dense:

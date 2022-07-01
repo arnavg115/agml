@@ -1,6 +1,6 @@
-from snn.layers import softmax
-from snn.utils import accuracy
-from snn.utils.losses import cross_ent
+from .layers import softmax
+from .utils import accuracy
+from .utils.losses import cross_ent
 
 
 class NN:
