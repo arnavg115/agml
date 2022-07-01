@@ -1,4 +1,5 @@
 from snn.layers import softmax
+from snn.utils import accuracy
 from snn.utils.losses import cross_ent
 
 
@@ -11,7 +12,9 @@ class NN:
     def train(self,x,y):
         self.x = x
         self.y = y
-        return self.forward()
+        i, loss, accu = self.forward()
+        self.backward()
+        return i, loss, accu
 
     def forward(self):
         i = self.x
@@ -21,7 +24,8 @@ class NN:
 
         self.yhat = i
         loss = self.loss.run(y=self.y, yhat = i)
-        return i, loss
+        accu = accuracy(y=self.y, yhat = i)
+        return i, loss, accu
 
     # todo: finish backprop for entire nn
     def backward(self):
@@ -34,8 +38,8 @@ class NN:
             if type(layer) is softmax:
                 grad = layer.backward(self.y)
             else:
-                grad = layer.backward(grad)
-                print(grad.shape)
+                grad = layer.update_params(grad, self.lr)
+                # print(grad.shape)
             # print(grad.shape)
 
 

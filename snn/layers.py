@@ -8,7 +8,6 @@ class Dense:
         self.b = np.random.randn(neurons, 1)
         self.act =  act
 
-    
     def forward(self,inpt):
         self.inpt = inpt
         self.intermed = np.dot(self.w, inpt) + self.b
@@ -17,11 +16,20 @@ class Dense:
 
     # todo: fix backprop error
     def backward(self, otpt_grad):
-        print(otpt_grad.shape)
+
         act_d = self.act.der(self.intermed) * otpt_grad
         w_grad = np.dot(act_d,self.inpt.T)
         b_grad = act_d
-        return act_d
+        z_grad = self.w.T.dot(otpt_grad)
+        return w_grad, b_grad, z_grad
+    
+    def update_params(self, otpt_grad,lr):
+        w_grad, b_grad, z_grad = self.backward(otpt_grad)
+        self.w = self.w + (lr * w_grad)
+        self.b = self.b + (lr * b_grad)
+        return z_grad 
+
+
 
 
 
