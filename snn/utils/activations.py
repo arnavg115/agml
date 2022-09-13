@@ -3,27 +3,27 @@ import numpy as np
 
 
 class relu:
-    name = "relu"
-
+    tp = "act"
     @staticmethod
-    def run(x):
+    def forward(x):
         return np.maximum(0,x)
     @staticmethod
-    def der(x):
-        return (relu.run(x)).astype(int)
+    def backward(x,lr):
+        return (relu.forward(x) != 0).astype(int)
 
 
 
 class sigmoid:
-    name = "sig"
 
+    tp = "act"
     @staticmethod
-    def run(x):
+    def forward(x):
         return 1/(1+np.exp(-x))
 
     @staticmethod
-    def der(x):
-        return np.exp2(sigmoid.run(x)) * np.exp(-x)
+    def backward(x,lr):
+        forw = sigmoid.forward(x)
+        return forw * (1-forw)
 
 
 # relu = lambda x: np.maximum(0,x)

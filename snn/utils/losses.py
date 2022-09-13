@@ -6,11 +6,11 @@ class mse:
 
     @staticmethod
     def run( y, yhat):
-        return np.sum(np.exp2(y-yhat)) * (1/y.shape[0])
+        return np.mean(np.power(y-yhat,2))
     
     @staticmethod
     def der( y, yhat):
-        return (-2/y.shape[0]) * (y-yhat)
+        return 2/np.size(y) * (yhat-y) 
 
 
 class cross_ent:
