@@ -10,6 +10,7 @@ def accuracy(yhat, y):
 
 def one_hot(y):
     enc = np.zeros((len(np.unique(y)),y.shape[0]))
+    # print(enc.shape)
     for i,val in enumerate(y):
-      enc[val][i] =1
+      enc[val][i] = 1
     return enc

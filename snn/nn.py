@@ -2,44 +2,42 @@ from .layers import softmax
 from .utils import accuracy
 from .utils.losses import cross_ent
 import numpy as np
+from tqdm import tqdm
 
 class NN:
-    def __init__(self, layers, loss, lr = 1E-5) -> None:
+    def __init__(self, layers, loss, lr = 1E-5, batch_size = 64) -> None:
         self.layers = layers
         self.loss = loss
         self.lr  = lr
+        self.batch_size = 64
 
     def predict(self,x):
         i  = x
         for layer in self.layers:
             i = layer.forward(i)
         return i
+        
     def train(self,x,y,epochs):
         self.x = x
         self.y = y
-        for i in range(epochs):
-            j, loss, accu = self.forward()
+        tq = tqdm(range(epochs))
+        for i in tq:
+            loss, accu = self.forward(x)
+            tq.set_description_str(f"Loss: {loss}, Accuracy: {accu}")
             
             self.backward()
 
         return i, loss, accu
 
-    def forward(self):
-        i = self.x
-        for layer in self.layers:
-
-            i = layer.forward(i)
-        print(np.shape(i))
-
-        self.yhat = i
-        loss = self.loss.run(y=self.y, yhat = i)
-        accu = accuracy(y=self.y, yhat = i)
-        print(accu)
-        return i, loss, accu
+    def forward(self,x):
+        self.yhat = self.predict(x)
+        loss = self.loss.run(y=self.y, yhat = self.yhat)
+        accu = accuracy(y=self.y, yhat = self.yhat)
+        return loss, accu
 
     # todo: finish backprop for entire nn
     def backward(self):
-        grad = []
+        grad = self.y
 
         if not self.loss is cross_ent:
             grad = self.loss.der(self.y, self.yhat)
