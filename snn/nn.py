@@ -1,60 +1,59 @@
-from .layers import softmax
-from .utils import accuracy
-from .utils.losses import cross_ent
+# from turtle import forward
 import numpy as np
 from tqdm import tqdm
+import pickle
+
 
 class NN:
-    def __init__(self, layers, loss, lr = 1E-5, batch_size = 64) -> None:
+    def __init__(self, layers,loss, lr = 0.01,) -> None:
         self.layers = layers
+        self.lr = lr
         self.loss = loss
-        self.lr  = lr
-        self.batch_size = 64
-
-    def predict(self,x):
-        i  = x
-        for layer in self.layers:
-            i = layer.forward(i)
-        return i
-        
-    def train(self,x,y,epochs):
-        self.x = x
-        self.y = y
-        tq = tqdm(range(epochs))
-        for i in tq:
-            loss, accu = self.forward(x)
-            tq.set_description_str(f"Loss: {loss}, Accuracy: {accu}")
-            
-            self.backward()
-
-        return i, loss, accu
-
-    def forward(self,x):
-        self.yhat = self.predict(x)
-        loss = self.loss.run(y=self.y, yhat = self.yhat)
-        accu = accuracy(y=self.y, yhat = self.yhat)
-        return loss, accu
-
-    # todo: finish backprop for entire nn
-    def backward(self):
-        grad = self.y
-
-        if not self.loss is cross_ent:
-            grad = self.loss.der(self.y, self.yhat)
-        lrs = self.layers[::-1]
-        for layer in lrs:
-            grad = layer.backward(grad,self.lr)
-            # if type(layer) is softmax:
-            #     grad = layer.backward(self.y)
-            # else:
-            #     grad = layer.update_params(grad, self.lr)
-                # print(grad.shape)
-            # print(grad.shape)
-
-
-        
-
-
-
-
     
+    def forward(self, x):
+        st = x
+        
+        for layer in self.layers:
+            st = layer.forward(st)
+            # print(st.shape)
+        
+        # self.ot = st
+        return st
+
+    def backward(self, y, yhat):
+        grad = self.loss.backward(y,yhat)
+        # print(y.shape)
+        for layer in reversed(self.layers):
+            grad = layer.backward(grad,self.lr)
+        
+        los = self.loss.forward(y, yhat)
+        return los
+
+    def train(self,epochs, X,Y):
+        tq = tqdm(range(epochs))
+        print(Y.shape)
+        
+        for epoch in tq:
+            losss = 0
+            accu = 0
+            for x,y in zip(X,Y):
+                yhat = self.forward(x)
+                accu += np.argmax(yhat) == np.argmax(y)
+                los = self.backward(y,yhat)
+                losss += los
+            tq.set_description_str(f"LOSS:{losss/len(Y)}, ACCU:{accu/len(Y)}")
+    
+    
+    def validate(self,x_val,y_val):
+        return np.sum(np.argmax(self.forward(x_val.T),axis = 0) == y_val)/y_val.shape[0]
+    
+    @staticmethod
+    def save(filename:str,nn):
+        file = open(filename,"wb")
+        pickle.dump(nn,file)
+    
+    @staticmethod
+    def load(filename:str):
+        file = open(filename, "rb")
+        return pickle.load(file)
+            
