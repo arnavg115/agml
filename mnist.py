@@ -7,6 +7,12 @@ import csv
 import os
 from snn.vis import display_mnist_image
 
+if "train.csv" not in os.listdir():
+    import urllib.request
+    print("Downloading data")
+    url = 'https://github.com/arnavg115/snn/releases/download/DATA/train.csv'
+    urllib.request.urlretrieve(url, 'train.csv')
+
 out = []
 
 with open('train.csv') as csvfile:
@@ -20,7 +26,7 @@ y = np.reshape(data[:,0],(data.shape[0]))
 one_hot = one_hot_func(y)
 
 if "model.pkl" in os.listdir():
-    print("Loading from detected saved checkpoint")
+    print("Loading model from detected saved checkpoint")
     nn = NN.load("model.pkl")
 else:
     nn = NN([dense(128,784, kaiming=True), relu(), dense(10,128, kaiming=True)], loss=mse(), lr=0.01)
