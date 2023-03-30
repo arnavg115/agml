@@ -1,24 +1,38 @@
-import pandas as pd
 import numpy as np
-from snn.layer import dense, relu, softmax
-from snn.loss import cross_ent
+from snn.layer import dense, relu, sigmoid
+from snn.loss import mse
 from snn.nn import NN
+from snn.utils import one_hot_func
+import csv
+import os
+from snn.vis import display_mnist_image
+
+out = []
+
+with open('train.csv') as csvfile:
+    reader = csv.reader(csvfile)
+    out = list(reader)
+
+data = np.array(out,dtype=int)
+x = np.reshape(data[:,1:],(data.shape[0],784)) / 255
+
+y = np.reshape(data[:,0],(data.shape[0]))
+one_hot = one_hot_func(y)
+
+if "model.pkl" in os.listdir():
+    print("Loading from detected saved checkpoint")
+    nn = NN.load("model.pkl")
+else:
+    nn = NN([dense(128,784, kaiming=True), relu(), dense(10,128, kaiming=True)], loss=mse(), lr=0.01)
+    nn.train(200, x[10000:], one_hot[10000:], batch_size=500)
+    NN.save("model.pkl", nn)
 
 
-df = pd.read_csv("train.csv")
-data = df.to_numpy()
-x = np.reshape(data[:,1:],(42000,784,1)) / 255
-y = np.reshape(data[:,0],(42000))
-x_train = x[:10000]
-y_train = y[:10000]
-m, = y_train.shape
-# print(np.identity(y)[0:0+1])
-one_hot = np.zeros((y_train.shape[0],10))
-one_hot[np.arange(m),y_train] = 1
-one_hot = np.reshape(one_hot, (y_train.shape[0],10,1))
-# print(one_hot.shape)
-nn = NN([dense(20,784),relu(),dense(10,20),softmax()],loss=cross_ent())
 
-nn.train(10,x_train,one_hot)
-
-NN.save("model.pkl",nn)
+while True:
+    ins = input("Enter index of image to see and predict (0 - 9999), or enter q to quit: ")
+    if ins == "q":
+        break
+    ind = int(ins)
+    display_mnist_image(data[ind,1:].reshape((28,28)))
+    print(np.argmax(nn.forward(x[ind:ind+1])))
