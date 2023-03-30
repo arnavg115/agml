@@ -6,12 +6,22 @@ from snn.utils import one_hot_func
 import csv
 import os
 from snn.vis import display_mnist_image
+import urllib.request
 
-if "train.csv" not in os.listdir():
-    import urllib.request
-    print("Downloading data")
-    url = 'https://github.com/arnavg115/snn/releases/download/DATA/train.csv'
+
+download_data = False
+download_weights = False
+
+def download(url):
+
     urllib.request.urlretrieve(url, 'train.csv')
+    
+
+if download_data:
+    download("https://github.com/arnavg115/snn/releases/download/DATA/train.csv")
+if download_weights:
+    download("https://github.com/arnavg115/snn/releases/download/DATA/model.pkl")
+
 
 out = []
 
