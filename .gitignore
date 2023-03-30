@@ -2,3 +2,4 @@ train.csv
 model.pkl
 __pycache__/
 test.py
+.DS_Store
