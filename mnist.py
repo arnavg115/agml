@@ -56,4 +56,5 @@ while True:
         break
     ind = int(ins)
     display_mnist_image(data[ind,1:].reshape((28,28)))
-    print(np.argmax(nn.forward(x[ind:ind+1])))
+    print(f"Predicted: {np.argmax(nn.forward(x[ind:ind+1]))}")
+    print(f"Actual: {y[ind]}")
