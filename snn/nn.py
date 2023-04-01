@@ -6,8 +6,14 @@ from .utils import accuracy
 
 
 class NN:
-    def __init__(self, layers,loss, lr = 0.01,) -> None:
-        self.layers = layers
+    def __init__(self, layers,loss, lr = 0.01,optimizer = None, kaiming=False, xavier=False) -> None:
+        self.layers = []
+
+        for layer in layers:
+            if layer.type == "activation" or layer.type=="dropout":
+                self.layers.append(layer.construct())
+            else:
+                self.layers.append(layer.construct(kaiming=kaiming, xavier=xavier,optimizer=optimizer ))
         self.lr = lr
         self.loss = loss
     
@@ -39,8 +45,6 @@ class NN:
                 yhat = self.forward(X)
                 los = self.backward(Y, yhat)
                 tq.set_description_str(f"LOSS:{los}, ACCU:{accuracy(yhat.T, Y)}")
-                print(yhat.shape)
-                print(Y.shape)
             else:
                 loss = 0
                 accu = 0
@@ -53,12 +57,10 @@ class NN:
                     loss+=self.backward(y_tr, yhat)
                 
                 tq.set_description_str(f"AVG BATCH LOSS:{loss/numb}, BATCH ACCURACY:{accu/(numb * y_tr.shape[0])}")
-                
-                
+                  
+    def predict(self, x):
+        return self.forward(x[np.newaxis,:])
 
-
-    
-    
     def validate(self,x_val,y_val):
         return accuracy(self.forward(x_val), y_val)
     

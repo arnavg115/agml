@@ -1,5 +1,5 @@
 import numpy as np
-from snn.layer import dense, relu, sigmoid
+from snn.layer import Dense, Relu
 from snn.loss import mse
 from snn.nn import NN
 from snn.utils import one_hot_func
@@ -9,8 +9,8 @@ from snn.vis import display_mnist_image
 import urllib.request
 
 
-download_data = True
-download_weights = True
+download_data = False
+download_weights = False
 
 
     
@@ -34,18 +34,19 @@ with open('train.csv') as csvfile:
     out = list(reader)
 
 data = np.array(out,dtype=int)
-x = np.reshape(data[:,1:],(data.shape[0],784)) / 255
+x = data[:,1:] / 255
 
-y = np.reshape(data[:,0],(data.shape[0]))
+y = data[:,0]
 one_hot = one_hot_func(y)
 
 if "model.pkl" in os.listdir():
     print("Loading model from detected saved checkpoint")
     nn = NN.load("model.pkl")
 else:
-    nn = NN([dense(128,784, kaiming=True), relu(), dense(10,128, kaiming=True)], loss=mse(), lr=0.01)
-    nn.train(200, x[10000:], one_hot[10000:], batch_size=500)
+    nn = NN([Dense(128,784), Relu(), Dense(10,128)], loss=mse(), lr=0.01, kaiming=True, optimizer="adam")
+    nn.train(50, x, one_hot, batch_size=200)
     NN.save("model.pkl", nn)
+
 
 
 
@@ -55,6 +56,6 @@ while True:
     if ins == "q":
         break
     ind = int(ins)
-    display_mnist_image(data[ind,1:].reshape((28,28)))
-    print(f"Predicted: {np.argmax(nn.forward(x[ind:ind+1]))}")
+    display_mnist_image(x[ind].reshape((28,28)))
+    print(f"Predicted: {np.argmax(nn.predict(x[ind]))}")
     print(f"Actual: {y[ind]}")
