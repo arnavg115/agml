@@ -1,6 +1,6 @@
 import numpy as np
 from snn.layer import Dense, Relu
-from snn.loss import mse
+from snn.loss import cross_entropy_softmax, mse
 from snn.nn import NN
 from snn.utils import one_hot_func
 import csv
@@ -37,16 +37,16 @@ data = np.array(out,dtype=int)
 x = data[:,1:] / 255
 
 y = data[:,0]
-one_hot = one_hot_func(y)
+one_hot = one_hot_func(y,10)
 
 if "model.pkl" in os.listdir():
     print("Loading model from detected saved checkpoint")
     nn = NN.load("model.pkl")
 else:
-    nn = NN([Dense(128,784), Relu(), Dense(10,128)], loss=mse(), lr=0.01, kaiming=True, optimizer="adam")
+    nn = NN([Dense(128,784), Relu(), Dense(10,128)], loss=cross_entropy_softmax(), lr=0.01, kaiming=True, optimizer="adam")
     nn.train(50, x, one_hot, batch_size=200)
-    NN.save("model.pkl", nn)
-
+    # NN.save("model.pkl", nn)
+#
 
 
 

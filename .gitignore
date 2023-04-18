@@ -1,5 +1,5 @@
 train.csv
-model.pkl
+*.pkl
 __pycache__/
 test.py
 .DS_Store
