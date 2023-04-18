@@ -1,13 +1,17 @@
-# from turtle import forward
+from typing import List
 import numpy as np
 from tqdm import tqdm
 import pickle
+from snn.layer import Layer
+from snn.layer import _layer
+
+from snn.loss import loss
 from .utils import accuracy
 
 
 class NN:
-    def __init__(self, layers,loss, lr = 0.01,optimizer = None, kaiming=False, xavier=False) -> None:
-        self.layers = []
+    def __init__(self, layers:List[Layer],loss:loss, lr = 0.01,optimizer = None, kaiming=False, xavier=False) -> None:
+        self.layers:List[_layer] = []
 
         for layer in layers:
             if layer.type == "activation" or layer.type=="dropout":
@@ -63,6 +67,9 @@ class NN:
 
     def validate(self,x_val,y_val):
         return accuracy(self.forward(x_val), y_val)
+    
+    def forward_layer(self, x, ind:int):
+        return self.layers[ind].forward(x)
     
     @staticmethod
     def save(filename:str,nn):

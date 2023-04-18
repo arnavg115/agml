@@ -8,17 +8,15 @@ This is a simple neural network framework built on top of `numpy`. It is an amal
 
 ### What has been implemented?
 
-- Layers: Dense, Dropout
-- Activations: Relu, Sigmoid
-- Loss Functions: Mean Squared Error
+- Layers: Dense, Dropout, Softmax, Embedding
+- Activations: Relu, Sigmoid, Leaky Relu
+- Loss Functions: Mean Squared Error, Softmax
 - Optimizers: Momentum, Adam, RMSProp
 - Features: Saving/Loading model weights, simple grayscale ascii visualizer
 
 ### What is planned?
-
-- Layers: Convultional, Softmax
-- Activations: Relu, Tanh, Leaky Relu
-- Loss: Cross Entropy
+- Layers: Convultional
+- Activations: Tanh
 - Networks: RNN, Transformers?
 
 ### Why?

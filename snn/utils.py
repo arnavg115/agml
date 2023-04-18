@@ -1,9 +1,9 @@
 import numpy as np
 
 
-def one_hot_func(array):
-    m, = array.shape
-    one_hot = np.zeros((m,10))
+def one_hot_func(array, size):
+    m = len(array)
+    one_hot = np.zeros((m,size))
     one_hot[np.arange(m),array] = 1
     return one_hot
 
