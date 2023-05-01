@@ -2,10 +2,9 @@ from typing import List
 import numpy as np
 from tqdm import tqdm
 import pickle
-from snn.layer import Layer
-from snn.layer import _layer
-
-from snn.loss import loss
+from .layers import Layer
+from .layers.layer import _layer, Layer
+from .loss import loss
 from .utils import accuracy
 
 
@@ -22,13 +21,13 @@ class NN:
         self.loss = loss
     
     def forward(self, x):
-        st = x.T
+        st = x
         for layer in self.layers:
             st = layer.forward(st)
         return st
 
     def backward(self, y_inp, yhat):
-        y = y_inp.T
+        y = y_inp
 
         grad = self.loss.backward(y,yhat)
 
@@ -48,7 +47,7 @@ class NN:
             if batch_size == 0:
                 yhat = self.forward(X)
                 los = self.backward(Y, yhat)
-                tq.set_description_str(f"LOSS:{los}, ACCU:{accuracy(yhat.T, Y)}")
+                tq.set_description_str(f"LOSS:{los}, ACCU:{accuracy(yhat, Y)}")
             else:
                 loss = 0
                 accu = 0
@@ -57,7 +56,7 @@ class NN:
                     y_tr = Y[batch_size*batch: batch_size*(batch+1)]
 
                     yhat = self.forward(x_tr)
-                    accu+= np.sum(np.argmax(yhat.T, axis=1) == np.argmax(y_tr, axis=1))
+                    accu+= np.sum(np.argmax(yhat, axis=1) == np.argmax(y_tr, axis=1))
                     loss+=self.backward(y_tr, yhat)
                 
                 tq.set_description_str(f"AVG BATCH LOSS:{loss/numb}, BATCH ACCURACY:{accu/(numb * y_tr.shape[0])}")

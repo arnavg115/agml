@@ -9,15 +9,14 @@ This is a simple neural network framework built on top of `numpy`. It is an amal
 ### What has been implemented?
 
 - Layers: Dense, Dropout, Softmax, Embedding
-- Activations: Relu, Sigmoid, Leaky Relu
+- Activations: Relu, Sigmoid, Leaky Relu, Tanh
 - Loss Functions: Mean Squared Error, Softmax
 - Optimizers: Momentum, Adam, RMSProp
 - Features: Saving/Loading model weights, simple grayscale ascii visualizer
 
 ### What is planned?
-- Layers: Convultional
-- Activations: Tanh
-- Networks: RNN, Transformers?
+- Layers: Convolutional
+- Networks: RNN, word2vec, transformers?
 
 ### Why?
 

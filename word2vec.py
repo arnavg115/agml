@@ -1,6 +1,6 @@
 import numpy as np
-from snn.layer import Dense, Embedding
-from snn.loss import cross_entropy_softmax, mse
+from snn.layers import Dense, Embedding
+from snn.loss import mse
 from snn.nlp import tokenize, build_vectorized_dict, vectorize
 from snn.nn import NN
 

@@ -1,5 +1,5 @@
 # import imp
-from snn.layer import dense, relu, sigmoid
+from snn.layers import dense, relu, sigmoid
 from snn.loss import mse
 from snn.nn import NN
 import numpy as np
