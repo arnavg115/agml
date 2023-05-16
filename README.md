@@ -1,6 +1,4 @@
-# snn
-
-SNN - simple neural network
+# agml
 
 ### What is this?
 
