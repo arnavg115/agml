@@ -14,7 +14,7 @@ This is a simple neural network framework built on top of `numpy`. It is an amal
 
 ### What is planned?
 - Layers: Convolutional
-- Networks: RNN, word2vec, transformers?
+- Networks: RNN, LSTM, transformers?
 
 ### Why?
 

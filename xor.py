@@ -9,13 +9,12 @@ import pickle
 X = np.reshape([[0, 0], [0, 1], [1, 0], [1, 1]], (4, 2, 1))
 Y = np.reshape([[0], [1], [1], [0]], (4, 1, 1))
 
-nn = NN([dense(3,2), relu(),dense(1,3),sigmoid()],loss=mse())
+nn = NN([dense(3, 2), relu(), dense(1, 3), sigmoid()], loss=mse())
 
-nn.train(10000,X,Y)
+nn.train(10000, X, Y)
 
 # print(np.size(Y))
 for x in X:
     print(nn.forward(x))
 
-NN.save("model.pkl",nn)
-
+NN.save("model.pkl", nn)

@@ -1,11 +1,11 @@
 import numpy as np
-from snn.layers import Dense, Relu
-from snn.loss import cross_entropy_softmax, mse
-from snn.nn import NN
-from snn.utils import one_hot_func
+from agml.layers import Dense, Relu
+from agml.loss import cross_entropy_softmax, mse
+from agml.nn import NN
+from agml.utils import one_hot_func
 import csv
 import os
-from snn.vis import display_mnist_image
+from agml.vis import display_mnist_image
 import urllib.request
 
 
@@ -16,7 +16,7 @@ download_weights = False
     
 # if download_data:
 #   print("Downloading MNIST Data")
-#   url = "https://github.com/arnavg115/snn/releases/download/DATA/train.csv"
+#   url = "https://github.com/arnavg115/agml/releases/download/DATA/train.csv"
 #   urllib.request.urlretrieve(url, 'train.csv')
 # if download_weights:
 #   print("Downloading pretrained model weights")

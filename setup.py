@@ -6,6 +6,6 @@ setup(
    description="AG's implementation of simple deep learning algorithms.",
    author='Arnav G.',
    author_email='',
-   packages=['AGML'],
+   packages=['agml'],
    install_requires=['numpy','tqdm'], 
 )
