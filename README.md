@@ -28,10 +28,10 @@ Check out this [Demo](https://replit.com/@garnavaurha/snn?v=1) of MNIST digit re
 
 ```python
 import numpy as np
-from snn.layer import Dense, Relu
-from snn.nn import NN
-from snn.loss import mse
-from snn.utils import one_hot_func
+from agml.layer import Dense, Relu
+from agml.nn import NN
+from agml.loss import mse
+from agml.utils import one_hot_func
 
 # Grab data
 # X is of shape (10000,784), only 2 dims supported
